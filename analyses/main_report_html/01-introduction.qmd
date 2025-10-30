@@ -1,0 +1,28 @@
+---
+format:
+    html:
+        embed-rmd: true
+        output-ext: "htm"
+---
+
+# Introduction
+
+This chapter introduces the basics of cross-language computation in Quarto.
+
+```{r}
+library(reticulate)
+```
+
+## Python Example
+
+```{python}
+x = 42
+print(f"Python variable x: {x}")
+```
+
+## R Example
+
+```{r}
+y <- 3.14
+cat("R variable y:", y, "\n")
+```

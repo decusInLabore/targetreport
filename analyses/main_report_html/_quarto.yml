@@ -1,0 +1,82 @@
+project:
+  # type: book
+  type: website
+  # type manuscript
+  # type article
+  output-dir: ../../../../../test_html_local/
+
+  render:
+    - index.qmd
+    - 01-introduction.qmd
+    - 02-python-to-r.qmd
+    - 03-r-to-python.qmd
+    - 04-summary.qmd
+    - 05-figures.qmd
+
+editor:
+  markdown:
+    references:
+      location: block
+      prefix: "Main_Analysis_"
+
+format: 
+    html:
+      theme: minty
+      code-fold: true
+      highlight-style: arrow
+      code-line-numbers: true
+      code-copy: true
+      df-print: paged
+      highlight: default
+      toc: true
+      toc-depth: 5
+      toc-title: Contents
+      toc-location: left
+      embed-resources: true
+      output-ext: "html"
+
+
+website:
+  title: "Multi-Language Analysis Book"
+  favicon: "./src/images/logo.ico"
+  sidebar:
+    logo: ./src/images/logo.ico
+    style: "docked"
+    search: true
+    contents:
+      - section: "Overview"
+        contents:
+          - file: index.html
+            text: "Overview"
+      - section: "Sub-sections"
+        contents:
+          - section: "Part 1"
+            contents:
+              - file: 01-introduction.htm
+                text: "Introduction"
+          - section: "Part 2"
+            contents:
+              - file: 02-python-to-r.htm
+                text: "Part 02-python-to-r"
+          - section: "Part 3"
+            contents:
+              - file: 03-r-to-python.htm
+                text: "Part 03-r-to-python"
+          - section: "Part 4"
+            contents:
+              - file: 04-summary.htm
+                text: "Part 04-summary"
+          - section: "Part 5"
+            contents:
+              - file: 05-figures.htm
+                text: "Part 05-figures"
+
+book:
+  title: "Multi-Language Analysis Book"
+  author: "Your Name"
+  chapters:
+    - index.qmd
+    - 01-introduction.qmd
+    - 02-python-to-r.qmd
+    - 03-r-to-python.qmd
+    - 04-summary.qmd

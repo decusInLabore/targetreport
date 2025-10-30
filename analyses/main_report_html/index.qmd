@@ -1,0 +1,9 @@
+---
+format:
+    html:
+        output-ext: "html"
+---
+
+# Welcome
+
+This book demonstrates how to use Python and R together in Quarto, passing variables between languages for reproducible analysis.

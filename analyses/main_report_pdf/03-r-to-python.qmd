@@ -1,0 +1,23 @@
+---
+format:
+    html:
+        embed-rmd: true
+        output-ext: "htm"
+---
+
+# Passing R Variable to Python
+
+Here we define a variable in R and use it in Python.
+
+## R
+
+```{r}
+my_r_value <- 7
+```
+
+## Python (access R variable)
+
+```{python}
+my_r_value = r.my_r_value
+print("Value from R in Python:", my_r_value)
+```

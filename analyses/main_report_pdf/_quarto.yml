@@ -1,0 +1,44 @@
+project:
+  type: book
+  output-dir: ../../../../output_pdf/
+  render:
+    - index.qmd
+    - 01-data-preparation.qmd
+    - 02-partA.qmd
+    - 03-partB.qmd
+    - 04-appendix.qmd
+    - 01-introduction.qmd
+    - 02-python-to-r.qmd
+    - 03-r-to-python.qmd
+    - 04-summary.qmd
+    - 05-figures.qmd
+
+editor:
+  markdown:
+    references:
+      location: block
+      prefix: "Main_Analysis_"
+
+format: 
+  pdf:
+    toc: true
+    toc-depth: 5
+    toc-title: Contents
+    code-line-numbers: true
+    highlight-style: arrow
+    code: false   # Delete or set to true if you want code blocks in the output
+
+book:
+  title: "Drug Target Evaluation Report"
+  author: "Stefan Boeing"
+  chapters:
+    - index.qmd
+    - 01-data-preparation.qmd
+    - 02-partA.qmd
+    - 03-partB.qmd
+    - 04-appendix.qmd
+    - 01-introduction.qmd
+    - 02-python-to-r.qmd
+    - 03-r-to-python.qmd
+    - 04-summary.qmd
+    - 05-figures.qmd

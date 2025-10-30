@@ -1,0 +1,27 @@
+---
+format:
+    html:
+        embed-rmd: true
+        output-ext: "htm"
+---
+
+# Passing Python Variable to R
+
+Here we define a variable in Python and use it in R.
+
+```{r}
+library(reticulate)
+```
+
+## Python
+
+```{python}
+my_value = 100
+```
+
+## R (access Python variable)
+
+```{r}
+py_my_value <- py$my_value
+cat("Value from Python in R:", py_my_value, "\n")
+```
