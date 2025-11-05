@@ -33,7 +33,12 @@ singularity pull docker://boeings/r450.python310.ubuntu.22.04
 cd ../workdir
 
 ## Starting the singularity container ##
-You need to adjust the file paths for the --bind flag as appropriate on your system. 
+You need to adjust the file paths for the --bind flag as appropriate on your system.
+
+General syntax:
+singularity shell --cleanenv --bind </folder/on/host/system/data>:/data ../envs/r450.python310.ubuntu.22.04_latest.sif
+
+Specific example:
 singularity shell --cleanenv --bind /nemo:/nemo,/camp:/camp ../envs/r450.python310.ubuntu.22.04_latest.sif
 
 ## Or create venv environment in the current folder (change path if you'd like to store the venv environment files elsewhere) ##
