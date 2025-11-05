@@ -39,7 +39,7 @@ General syntax:
 singularity shell --cleanenv --bind </folder/on/host/system/data>:/data ../envs/r450.python310.ubuntu.22.04_latest.sif
 
 Specific example:
-singularity shell --cleanenv --bind /nemo:/nemo,/camp:/camp ../envs/r450.python310.ubuntu.22.04_latest.sif
+singularity shell --cleanenv --bind /nemo:/nemo,/camp:/camp,/flask:/flask ../envs/r450.python310.ubuntu.22.04_latest.sif
 
 ## Or create venv environment in the current folder (change path if you'd like to store the venv environment files elsewhere) ##
 This is only required once at the beginning of the project, so will be commented out for now. 
