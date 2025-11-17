@@ -1,0 +1,78 @@
+<!-- Set the chnkPrefix to make all chunks unique in the overall folder -->
+```{r, echo=FALSE, eval=TRUE, warning=FALSE}
+chnkPrefix <- "NS01-A1."
+VersionPdfExt <- VersionPdfExt <- paste0(".",chnkPrefix,"V", gsub("-", "", Sys.Date()), ".pdf")
+
+```
+
+<!-- In this part we collect project parameters and create a biolgic object -->
+
+```{r, echo=TRUE, eval=TRUE, warning=FALSE, results=F}
+
+###############################################################################
+###############################################################################
+## Create parameter list                                                     ##
+###############################################################################
+###############################################################################
+
+## Set project directory
+# projectDir <- gsub("scripts/bulkRNAseq_workflow/analyses/Main_Analysis", "", getwd())
+projectDir <- paste0(unlist(strsplit(getwd(), "scripts"))[1])
+designDir <- unlist(strsplit(getwd(), "analyses/"))[1]
+
+pipelineList <- biologicSeqTools2::assembleBiologicProject(
+  ## Path to the design file. Essential columns: sample.id, sample.group, dataseries. ##
+  ## Ideal sample name: [dataseries]_[sample.group]_[replicate]
+  designFN =  paste0(designDir, "design/design.table.txt"),
+  ## Path to model table ##
+  modelFN =  paste0(designDir, "design/model.table.txt"),
+  ## Path to NFcore setting file. Set to NULL in no-alignment mode.
+  #NFcoreSettingsFN = "/camp/stp/babs/working/boeings/Projects/goulda/adrien.franchet/472A_brains_from_drosophila_larvae_RN21220/workdir/bulkRNAseq_workflow/design/RN21220test.NFcore.samplesheet.file.csv",
+  ## Path to relevant FASTQ files.
+  #pathToSeqStorageFolder = c(
+  #    "/camp/stp/babs/inputs/sequencing/data/goulda/adrien.franchet/RN21220/primary_data/211203_A01366_0104_AH3WVGDMXY/fastq/",
+  #    "/camp/stp/babs/inputs/sequencing/data/goulda/adrien.franchet/RN21220/primary_data/211130_A01366_0101_BH3YWKDMXY/fastq/"
+  #),
+  ## Path to RSEM count table. Essential.
+  countTableFN = paste0(projectDir, "data/rsem.count.txt"),
+  ## Path to TPM table.
+  TpmTableFN =   paste0(projectDir, "data/dfTPM.txt"),
+  biologicSettingsFN = paste0(designDir, "design/biologic.settings.file.csv"),
+  PcaFN =  NULL,
+  #"/camp/stp/babs/working/boeings/Projects/goulda/adrien.franchet/472A_brains_from_drosophila_larvae_RN21220/workdir/data/dfPca.txt",
+  calculate_DGE = TRUE,
+  calculate_LRT = TRUE,
+  ## Path to external DEseq2 output files
+  DEseq2External_DGE = NULL,
+  #"/camp/stp/babs/working/boeings/Projects/goulda/adrien.franchet/472A_brains_from_drosophila_larvae_RN21220/workdir/data/DEseq2External_DGE/",
+  DEseq2External_LRT = NULL,
+  #"/camp/stp/babs/working/boeings/Projects/goulda/adrien.franchet/472A_brains_from_drosophila_larvae_RN21220/workdir/data/DEseq2External_LRT/",
+  stranded = TRUE,
+  read.length = "100bp",
+  paired.end = TRUE,
+  #pathToRSEMresultsFiles = paste0("/camp/stp/babs/working/boeings/Projects/goulda/adrien.franchet/472_brains_from_drosophila_larvae_RN21220/workdir/", "RSEM/Ensembl/"),
+  projectFolder = projectDir,
+  experiment_id = "bulkliverdemo",
+  project_name = "Liver cancer pseudo bulk RNA-seq demo from Kang et al",
+  lims.id = "bulkliverdemo",
+  labname = "Park Lab",
+  NtopGenes = 500,
+  experiment.type = "bulk_rna_seq",
+  species = "homo_sapiens",
+  release = "release-105",
+  count.table.headline = "Expression Intensities for all Samples",
+  count.table.sidelabel = "Expr",
+  heatmap.headline.text = "Heatmap: Row-averaged Expr",
+  designTScol = NULL,
+  timecourse.units = NULL,
+  primDataDB = "demogtex_data",
+  db.user = "babs",
+  host = "clvd1-db-u-p-31.thecrick.org",
+  lab.categories.table = "demogtex_lab_categories",
+  corGeneVec = c("EZH2")
+  #corGeneVec = NULL
+)
+
+
+```
+
