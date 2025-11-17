@@ -1,0 +1,33 @@
+project:
+  type: book
+  output-dir: ../../../../output_notebooks/
+  render:
+    - index.qmd
+    - 01-data-preparation.qmd
+    - 02-partA.qmd
+    - 03-partB.qmd
+    - 04-appendix.qmd
+    - 01-introduction.qmd
+    - 02-python-to-r.qmd
+    - 03-r-to-python.qmd
+    - 04-summary.qmd
+    - 05-figures.qmd
+
+format: 
+  ipynb:
+    execute: true
+
+book:
+  title: "Drug Target Evaluation Report"
+  author: "Stefan Boeing"
+  chapters:
+    - index.qmd
+    - 01-data-preparation.qmd
+    - 02-partA.qmd
+    - 03-partB.qmd
+    - 04-appendix.qmd
+    - 01-introduction.qmd
+    - 02-python-to-r.qmd
+    - 03-r-to-python.qmd
+    - 04-summary.qmd
+    - 05-figures.qmd

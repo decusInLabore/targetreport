@@ -5,20 +5,24 @@ format:
         output-ext: "htm"
 ---
 
-```{r, include=FALSE}
-## Don't delete this section if python is required in this analysis section. 
+# Introduction
+
+This chapter introduces the basics of cross-language computation in Quarto.
+
+```{r}
 library(reticulate)
 ```
 
-# Introduction
+## Python Example
 
-In addition, an html report is available at this publically accessible URL: [biologic.crick.ac.uk/targetreport](https://biologic.crick.ac.uk/targetreport)
+```{python}
+x = 42
+print(f"Python variable x: {x}")
+```
 
-## Data download and wrangling
-The code for data download and wrangling is part of the code supplement, but ommited in this summary report. 
+## R Example
 
-## Part A: Examination of a drug candidate
-In this example the histon-methyltransferase EZH2 is investigated. However, the analysis is written in modular form so it can be used as a template for any gene. 
-
-## Part B: Evaluation of a drug discovery strategy 
-In this example a preliminary examination of a liver oncology target is made. Also this analysis is written in modular form, so it can be used as a template for any such analysis. 
+```{r}
+y <- 3.14
+cat("R variable y:", y, "\n")
+```

@@ -1,0 +1,109 @@
+---
+format: pdf
+---
+
+```{r, echo=FALSE, include=FALSE}
+show_code = FALSE
+
+## Don't delete this section if python is required in this analysis section. 
+library(reticulate)
+
+target_gene = "EZH2"
+
+## If this type of analysis would be conducted more often, an automatic retrieval mechanism, e.g. from the EBI IntAct database would be put in place.
+target_bioplex_interactors = c(
+    "AEBP2",
+    "BTRC",
+    "EZH1",
+    "EED",
+    "EEF1A2",
+    "EPOP",
+    "FBXW11",
+    "HMGB1P1",
+    "JARID2",
+    "MTF2",
+    "PHF1",
+    "PHF19",
+    "RBBP4",
+    "RBBP7",
+    "SUZ12",
+    "FBXW11",
+    "PHF1",
+    "SKIDA1"
+)
+
+```
+
+# Part A: Model System Selection for Studies on `r target_gene`
+
+## Problem Outline
+
+## Strategy
+
+A model system for functional assays on a drug target as well as for validation of a mechanism of action (MOA) should be as simple as possible on the wet-lab handling side while reflecting all necessary complexity. If we are not dealing with a cell-intrinsic effect, e.g. a mechanism involving migration of cells to specific location or cell-cell signaling mechanism, a more complex 3D-cellculture or co-culture system needs to be considered. In this setting I'll make, based on the suggestion to use the DepMap dataset, the assumption that the MOA we're trying to characterize is cell intrinsic. 
+
+When picking a model system the following issues will be addressed:
+- Is there any possibility that the MOA exhibits gender-specific differences?
+- As no tissue of interest or therapeutic area was given, we have to determine which tissue of origin is most promising as model system
+- Using correlation, which is not causation, we will try to narrow down the search space
+- We will attempt to find a drug repurposing candidate by matching it with the functional genomics characteristics of the target gene under investigation
+- Using a multiomics approach, we will try to identify a set of highly similar model systems, so wetlab scientists can choose the system that suits their requirements best
+
+
+## Preliminary Examination
+
+### Protein complex Examination
+Many proteins function in the context of a protein complex. We will start by determening if `r target_gene` is part of a complex. To find stringently curated, high-quality protein-protein interaction recources we can use internal resources, commercial providers such as Intomics or public resources such as the [BioPlex resource](https://bioplex.hms.harvard.edu/explorer/network.php). In this preliminary analysis I'll use the `r target_gene` interactors from BioPlex: `r paste0(sort(target_bioplex_interactors), collapse=", ")`. To measure tissue specific expression, we use the Kendall tau coeffient. We can use this metric also to understand if perhaps any of the other complex members have a better tissue specific expression pattern and should be targeted instead of the main target. 
+
+### Gender Effect and Tissue Preferences
+In order to investigate expression of `r target_gene` in nomral tissue we use the Broad GTEx bulkRNAseq dataset. In order to understand if there are any gender-specific expression patterns for this gene, we split the datapoints for each tissue by gender. 
+
+![GTEx bulkRNAseq expression for EZH2.](../../../../input_figures/gtex.png){ width=95% }
+
+Next we determine cancers originating from which tissue type have grown dependent on `r target_gene`. 
+
+![DepMap dependency scores for EZH2 broken up by tissue type and gender.](../../../../input_figures/scores.per.celltype.png){ width=95% }
+
+Next we ask which tissues have grown particularly reliant on `r target_gene`
+
+![Percentages of tissues in the overall dataset and amongst those dependent on EZH2.](../../../../input_figures/dependency.percentages.png){ width=95% }
+
+The above results would indicate that functional follow up work and target validation should be done in Lymphoid tissue. 
+
+### Correlation Analyses
+Correlation analyses can't establish causality, but they are often useful in narrowing down the search space. Particularly when we can take a multiomics approach as is possible with the DepMap dataset.
+
+First we calculate 
+
+```{r, echo=show_code}
+library(knitr)
+df <- read.csv("../../../../input_tables/complex.correlation.table.csv")
+
+kable(df, caption = "Highly CRISPR correlated genes and correlated enzymes")
+```
+
+![EZH2 correlated enzymes](../../../../input_figures/complex.correlation.png){ width=80% }
+
+
+
+### Multiomis Analysis (MOFA)
+
+```{r}
+library(reticulate)
+
+target_gene = "EZH2"
+```
+
+## Summary and Selection Recommendation
+
+```{r}
+y <- 3.14
+cat("R variable y:", y, "\n")
+```
+
+## Checklist
+- []
+
+## Additional Options to considere
+- Examination of genome wide association (GWAS) and mendelian randomization (MR) studies
+- Examination of known drugs inhibiting or binding `r target_gene`

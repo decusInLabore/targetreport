@@ -2,15 +2,13 @@
 format: pdf
 ---
 
-# General
+# Preface
 
-In addition, an html report is available at this publically accessible URL: [biologic.crick.ac.uk/targetreport](https://biologic.crick.ac.uk/targetreport)
+The objectives of this report are the following:
+    - Data-driven model system selection for target characterization and validation
+    - A rational strategy to find a drug target for further exploration
 
-## Data download and wrangling
-The code for data download and wrangling is part of the code supplement, but ommited in this summary report. 
-
-## Part A: Examination of a drug candidate
-In this example the histon-methyltransferase EZH2 is investigated. However, the analysis is written in modular form so it can be used as a template for any gene. 
-
-## Part B: Evaluation of a drug discovery strategy 
-In this example a preliminary examination of a liver oncology target is made. Also this analysis is written in modular form, so it can be used as a template for any such analysis. 
+Principles:
+    - Whenever possible, scorable metrics are to be used to enable future automation
+    - Reports should be actionable for everyone from domain expert to software engineer
+    - Designed from the bottom up for collaboration. In [this github repository](https://github.com/decusInLabore/targetreport) instructions can be found on how to setup the singularity, renv and venv environment that was used to underpin this report.      

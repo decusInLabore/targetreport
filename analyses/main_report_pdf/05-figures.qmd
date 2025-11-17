@@ -2,18 +2,7 @@
 format: pdf
 ---
 
-
-```{r, echo=FALSE, include=FALSE}
-show_code = FALSE
-```
-
-# Part A: Examination of a drug candidate
-
-## Subchapter A1
-
-## Subchapter A2
-
-## Subchapter A3
+# Example: Figures in R and Python
 
 This chapter demonstrates how to organize multiple figures from R and Python in interactive tabs using Quarto.
 
@@ -21,7 +10,7 @@ This chapter demonstrates how to organize multiple figures from R and Python in 
 
 ### R: Scatter Plot Example
 
-```{r, echo=show_code}
+```{r}
 library(ggplot2)
 
 # Generic example data
@@ -45,7 +34,7 @@ ggplot(df, aes(X, Y, color=Group)) +
 
 ### R: Histogram Example
 
-```{r, echo=show_code}
+```{r}
 ggplot(df, aes(X, fill=Group)) +
   geom_histogram(bins=20, alpha=0.7, position="identity") +
   labs(title="R Histogram", x="X axis", y="Count", fill="Group") +
@@ -65,7 +54,7 @@ ggplot(df, aes(X, fill=Group)) +
 
 ### Python: Sine Curve Example
 
-```{python, echo=show_code}
+```{python}
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -88,7 +77,7 @@ plt.show()
 
 ### Python: Bar Plot Example
 
-```{python, echo=show_code}
+```{python}
 import matplotlib.pyplot as plt
 
 categories = ['A', 'B', 'C']

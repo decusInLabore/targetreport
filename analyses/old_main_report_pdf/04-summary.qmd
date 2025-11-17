@@ -1,0 +1,7 @@
+---
+format: pdf
+---
+
+# Summary
+
+This book showed how to organize a Quarto HTML book and pass variables between Python and R in each chapter.

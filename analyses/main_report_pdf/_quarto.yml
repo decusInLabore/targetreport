@@ -1,18 +1,11 @@
 project:
   type: book
-  output-dir: ../../../../output_pdf/
+  output-dir: ../../../../test_pdf_local/
   render:
     - index.qmd
-    - 01-data-preparation.qmd
-    - 02-partA.qmd
-    - 03-partB.qmd
-    - 04-appendix.qmd
-    - 01-introduction.qmd
-    - 02-python-to-r.qmd
-    - 03-r-to-python.qmd
-    - 04-summary.qmd
-    - 05-figures.qmd
-
+    - 01-part-A.qmd
+    - 02-part-B.qmd
+    - 03-appendix.qmd
 editor:
   markdown:
     references:
@@ -21,24 +14,30 @@ editor:
 
 format: 
   pdf:
+    fontfamily: libertinus  # Modern, readable
+    # or
+    # fontfamily: lmodern   # Latin Modern (default LaTeX)
+    # or  
+    # fontfamily: palatino  # Palatino-like
+    fontsize: 10pt
+    code-line-numbers: false
+    papersize: a4
+    geometry:
+      - top=2cm
+      - bottom=2cm
+      - left=2.5cm
+      - right=2cm
+    linestretch: 1.15
     toc: true
     toc-depth: 5
     toc-title: Contents
-    code-line-numbers: true
     highlight-style: arrow
-    code: false   # Delete or set to true if you want code blocks in the output
 
 book:
-  title: "Drug Target Evaluation Report"
+  title: "Target Discovery Report"
   author: "Stefan Boeing"
   chapters:
     - index.qmd
-    - 01-data-preparation.qmd
-    - 02-partA.qmd
-    - 03-partB.qmd
-    - 04-appendix.qmd
-    - 01-introduction.qmd
-    - 02-python-to-r.qmd
-    - 03-r-to-python.qmd
-    - 04-summary.qmd
-    - 05-figures.qmd
+    - 01-part-A.qmd
+    - 02-part-B.qmd
+    - 03-appendix.qmd

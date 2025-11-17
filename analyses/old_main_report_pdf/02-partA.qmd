@@ -1,0 +1,252 @@
+---
+format: pdf
+---
+
+
+```{r, echo=FALSE, include=FALSE}
+show_code = FALSE
+
+## Don't delete this section if python is required in this analysis section. 
+library(reticulate)
+```
+
+```{r, echo=FALSE, include=FALSE}
+show_code = FALSE
+
+## Don't delete this section if python is required in this analysis section. 
+library(reticulate)
+
+target_gene = "EZH2"
+```
+
+# Part A: Examination of a drug candidate
+
+## Subchapter A1
+
+### Calculate tau index for each sample type for `r target_gene`.
+
+We now calculate the Kendall rank correlation coefficient to be able to rank genes by tissue-specific expression. 
+
+A narrow, tissue-specific expression is desirable for a drug candidate, as it minimizes the risk of off-target effects and toxicity. 
+
+We first calculate the coefficient in the GTEx dataset. 
+
+We could calculate tau in the depmap dataset lg10tpm. 
+
+
+```{python, echo=show_code}
+## Load gtex data object
+from wrangle_gtex_data import gtexData
+
+gtex_data = gtexData.load_data("../../../../data/gtex.subset.pkl")
+gtex_data.data_shapes()
+
+df_meta = gtex_data.df_metadata
+
+df_tpm = gtex_data.df_tpm
+
+df_tau = df_tpm.T
+
+# Create a mapping dictionary from SAMPID to SMTS
+sampid_to_smts = df_meta['SMTS'].to_dict()
+
+## Replace sample ids with class labels
+df_tau = df_tau.rename(columns=sampid_to_smts)
+
+# Calculate tissue mean
+df_tissue_mean = df_tau.groupby(df_tau.columns, axis=1).mean()
+df_overall_mean = df_tau.T.mean()
+
+def calculate_tau(expression_vector):
+  """
+  Calculate tau score for tissue specificity.
+  Tau score ranges from 0 (ubiquitously expressed) to 1 (tissue-specific).
+  Formula: τ = (1/(n-1)) × Σ(1 - xi/xmax)
+  where xi is expression in tissue i, xmax is maximum expression
+  """
+  # Normalize by maximum expression
+  max_expr = expression_vector.max()
+  if max_expr == 0:
+      return 0
+
+  normalized = expression_vector / max_expr
+  n = len(expression_vector)
+  tau = (1 / (n - 1)) * np.sum(1 - normalized)
+  return tau
+
+# Calculate tau for each gene across tissues
+tau_scores = df_tissue_mean.apply(calculate_tau, axis=1)
+
+# Get the column name with the highest value for each gene
+# df_max_tissue = df_tau.idxmax(axis=1).to_frame('max_tissue')
+
+# Merge df_overall_mean, tau_scores and df_max_tissue by gene_id index
+df_merged = pd.DataFrame({
+    'overall_mean': df_overall_mean,
+    'tau_score': tau_scores,
+    'max_tissue': df_tau.idxmax(axis=1)
+})
+
+# Round only numeric columns to 2 decimal places
+df_merged[df_merged.select_dtypes(include='number').columns] = df_merged.select_dtypes(include='number').round(2)
+
+
+
+# Sort by tau_score from lowest to hightest
+df_merged = df_merged.sort_values('tau_score', ascending=False)
+
+################################
+## Load enzymatic activities  ##
+################################
+
+FN = "/nemo/stp/babs/working/boeings/Projects/boeings/stefan.boeing/625_liver_cancer_target_report/data/uniprot.enzymatic.activities.w.gene.ids.txt"
+
+df_enzymes = pd.read_csv(FN, sep="\t")
+df_enzymes = df_enzymes[['Gene Names (primary)', 'EC number']].drop_duplicates()
+df_enzymes = df_enzymes.groupby('Gene Names (primary)')['EC number'].apply(lambda x: '; '.join(x.dropna().astype(str))).reset_index()
+
+# Or if you want to rename multiple columns at once
+df_enzymes = df_enzymes.rename(columns={
+    'Gene Names (primary)': 'gene_id',
+    'EC number': 'ec_number'  # if you also want to rename this one
+})
+
+## Example subsetting all enzymes to kinases ##
+# EC class phosphotransferases: 2.7
+
+df_kinases = df_enzymes[
+    (df_enzymes['ec_number'].str.startswith('2.7.', na=False)) & 
+    (~df_enzymes['ec_number'].str.contains('.2.7.', na=False))
+]
+
+## End subset example ##
+
+
+##################################################################
+## Mark all genes that have any enzymatic activity in df_merged ##
+##################################################################
+# Create a mapping dictionary from df_enzymes
+gene_to_ec = df_enzymes.set_index('gene_id')['ec_number'].to_dict()
+
+df_merged['enzymatic_activity'] = df_merged.index.map(gene_to_ec)
+df_merged['enzymatic_activity'] = df_merged['enzymatic_activity'].fillna('')
+
+################################################
+## Now reduce to genes with enzymatic activty ##
+################################################
+
+df_merged_with_activity = df_merged[df_merged['enzymatic_activity'] != "" ]
+
+# Subset for a particular tissue
+liver_genes = df_merged[df_merged['max_tissue'] == 'Liver']
+liver_genes_w_activity = df_merged_with_activity[df_merged_with_activity['max_tissue'] == 'Liver']
+
+
+## Tau scores range from 0-1: show most tissue specific genes first:
+
+## calculate tau for selected genes / all genes and save as table
+
+## Load enzyme table and cross-reference with tau table
+
+## Show table: most tissue specific enzymes
+
+## Show percentile of target gene in terms of tissue speificity 
+
+```
+
+## Depmap Evaluation
+
+## Overall summary: Opportunites and limitiations
+
+This chapter demonstrates how to organize multiple figures from R and Python in interactive tabs using Quarto.
+
+:::: {.panel-tabset}
+
+### R: Scatter Plot Example
+
+```{r, echo=show_code}
+library(ggplot2)
+
+# Generic example data
+set.seed(123)
+df <- data.frame(
+  X = rnorm(100),
+  Y = rnorm(100),
+  Group = sample(c("A", "B"), 100, replace = TRUE)
+)
+
+ggplot(df, aes(X, Y, color=Group)) +
+  geom_point(size=2) +
+  labs(title="R Scatter Plot", x="X axis", y="Y axis", color="Group") +
+  theme_minimal()
+```
+
+**Figure:** Example scatter plot with two groups.  
+[Download PDF](report_figures/RScatterPlot.pdf)
+
+---
+
+### R: Histogram Example
+
+```{r, echo=show_code}
+ggplot(df, aes(X, fill=Group)) +
+  geom_histogram(bins=20, alpha=0.7, position="identity") +
+  labs(title="R Histogram", x="X axis", y="Count", fill="Group") +
+  theme_minimal()
+```
+
+**Figure:** Example histogram by group.  
+[Download PDF](report_figures/RHistogram.pdf)
+
+---
+
+::::
+
+## Python Figures
+
+:::: {.panel-tabset}
+
+### Python: Sine Curve Example
+
+```{python, echo=show_code}
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2 * np.pi, 100)
+y = np.sin(x)
+
+plt.figure(figsize=(6, 4))
+plt.plot(x, y, label='sin(x)', color='blue')
+plt.title("Python Sine Curve")
+plt.xlabel("x")
+plt.ylabel("sin(x)")
+plt.legend(title="Legend")
+plt.show()
+```
+
+**Figure:** Example sine curve plot.  
+[Download PDF](report_figures/PythonSineCurve.pdf)
+
+---
+
+### Python: Bar Plot Example
+
+```{python, echo=show_code}
+import matplotlib.pyplot as plt
+
+categories = ['A', 'B', 'C']
+values = [10, 15, 7]
+
+plt.figure(figsize=(6, 4))
+plt.bar(categories, values, color=['red', 'green', 'blue'])
+plt.title("Python Bar Plot")
+plt.xlabel("Category")
+plt.ylabel("Value")
+plt.legend(['Values'], title="Legend")
+plt.show()
+```
+
+**Figure:** Example bar plot for categories.  
+[Download PDF](report_figures/PythonBarPlot.pdf)
+
+::::
