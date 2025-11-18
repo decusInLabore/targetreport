@@ -4,11 +4,13 @@ format: pdf
 
 # Preface
 
-The objectives of this report are the following:
-    - Data-driven model system selection for target characterization and validation
-    - A rational strategy to find a drug target for further exploration
+The objectives for this report were the following:
 
-Principles:
-    - Whenever possible, scorable metrics are to be used to enable future automation
-    - Reports should be actionable for everyone from domain expert to software engineer
-    - Designed from the bottom up for collaboration. In [this github repository](https://github.com/decusInLabore/targetreport) instructions can be found on how to setup the singularity, renv and venv environment that was used to underpin this report.      
+- Data-driven model system selection for target characterization and validation
+- Sketching rational strategy to find a liver drug target for further exploration
+
+Guiding Principles:
+
+- Whenever possible, scorable metrics are to be used to enable future automation
+- Reports should be actionable for everyone from domain experts to software engineers
+- Bioinformatics ideally is designed with collaboration in mind from the bottom up 

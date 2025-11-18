@@ -5,7 +5,6 @@ project:
     - index.qmd
     - 01-part-A.qmd
     - 02-part-B.qmd
-    - 03-appendix.qmd
 editor:
   markdown:
     references:
@@ -40,4 +39,3 @@ book:
     - index.qmd
     - 01-part-A.qmd
     - 02-part-B.qmd
-    - 03-appendix.qmd
