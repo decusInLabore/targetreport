@@ -4,7 +4,6 @@ format: pdf
 
 ```{r, echo=FALSE, include=FALSE}
 show_code = FALSE
-
 ## Don't delete this section if python is required in this analysis section. 
 library(reticulate)
 
@@ -34,43 +33,44 @@ target_bioplex_interactors = c(
 
 ```
 
-# Part A: Model System Selection for `r target_gene`
+# Part A: Cell Model System Selection for `r target_gene`
 
 ## Overview
-To faciliate collaboration and reproducibility, all computational work for this project was conducted  within a portable singularity container in conjuction with a python-venv and R-renv environment. To demonstrate the utility of interactive reporting, a freely excessible result website was created [here](https://biologic.crick.ac.uk/bulkliverdemo). If it is of interest, I can render the underlying tumor-normal single-cell data in an interactive report, too. 
+To faciliate collaboration and reproducibility, all computational work for this project was conducted within a portable singularity container in conjuction with a python-venv and R-renv environment to make package usage reproducible as well. To demonstrate the utility of interactive reporting, a publicly accessible result website was created for the pseudobulk RNAseq analysis that is part of this example analysis [here](https://biologic.crick.ac.uk/bulkliverdemo). If it is of interest, I can render the paired tumor-normal single-cell dataset in an interactive report as well. A jupyter notebook with the code underpinning this analysis can be accessed in [this GitHub repository](https://github.com/decusInLabore/targetreport/blob/main/analyses/main_report_ipynb/part.A.model.selection.ipynb)
 
 Task outline:
-- Identify a suitable tissue for follow up work on the drug-target candidate gene EZH2
-- Identify one or several DepMap cell line models for follow up work
+
+- Identify a suitable tissue for follow-up validation and mechanism confirmation work on the drug-target candidate gene EZH2
+- Identify one or several DepMap cell line models for this follow up work
 - Provide hints regarding the mechanism of action for EZH2
-- Access the feasability of a drug-discover project with EZH2 at it's center
+- Assess the feasibility of a drug-discover project with EZH2 at its center
 
 ## Preliminary Examination
 
 ### EZH2 Molecular characteristics
-EZH2 is a histone-methyltransferase that itself is subject to post-translational modification. A highly homologous histone-methyltransferase EZH1 exists in the human genome. EZH2 is part of protein complex with EZH2, SUZ12 and EED at it's core. EZH2 itself is known to be post-translationally modified. Reference: [Uniprot](https://www.uniprot.org/uniprotkb/Q15910/entry). 
-Additional high-quality protein-protein interactions for `r target_gene` were determined using the [BioPlex recource](https://bioplex.hms.harvard.edu/): `r paste0(sort(target_bioplex_interactors), collapse=", ")`. 
+EZH2 is a histone-methyltransferase that in itself is subject to post-translational modification. A highly homologous histone-methyltransferase EZH1 exists in the human genome. EZH2 is part of protein complex with EZH2, SUZ12, and EED at its core. EZH2 itself is known to be post-translationally modified. Reference: [Uniprot](https://www.uniprot.org/uniprotkb/Q15910/entry). 
+Additional high-confidence protein-protein interactions for `r target_gene` were determined using the [BioPlex recource](https://bioplex.hms.harvard.edu/): `r paste0(sort(target_bioplex_interactors), collapse=", ")`. 
 
-To measure tissue specific expression, we use the Kendall tau coeffient. We can use this metric also to understand if perhaps any of the other complex members have a better tissue specific expression pattern and should be targeted instead of the main target. 
+To measure tissue-specific gene expression, I employed the Kendall tau coefficient. This metric can also be used to understand if perhaps any of the other complex members have a better tissue specific expression pattern and should be targeted in addition to the main drug target.
 
 ### Gender Effect and Tissue Preferences
-In order to investigate the expression of `r target_gene` in healthy primary human tissue the [GTEx project bulkRNAseq data](https://gtexportal.org) was used. To understand potential gender-specific expression patterns for EZH2, the plot below is split according to the patient gender annotaiton in the meta data. 
+To investigate the expression of `r target_gene` in healthy primary human tissue, the [GTEx project bulkRNAseq data](https://gtexportal.org) was used. To understand potential gender-specific expression patterns of EZH2, the plot below was split according to the patient gender annotation in the GTEx metadata. 
 
 ![GTEx bulkRNAseq expression for EZH2 split by gender for various healthy primary human tissues. A Kendall tau coefficient indicates the degree of tissue-specific expression for EZH2. It ranges from 0 to 1, with a value of one indicating very high tissue specificity](../../../../input_figures/gtex.png){ width=95% }
 
-Next I investigated the DepMap Crispr-dependency dataset for tissue-specific effects for `r target_gene`. I also investigated if there is a gender bias in the dependency scores.
+Next, I investigated the DepMap crispr-dependency dataset for tissue-specific effects for `r target_gene`. Again, I investigated whether there is a gender bias in the dependency scores.
 
 ![DepMap dependency scores for EZH2 broken down by tissue type and gender.](../../../../input_figures/scores.per.celltype.png){ width=95% }
 
-Subsequently I investigated if certain tissues of origin feature an enrichment with respect to dependency on EZH2 for survival. It appears that EZH2 dependency is observed with a higher frequency in tissues of lymphoid origin. 
+Subsequently I investigated if certain tissues of origin feature an enrichment with respect to DepMap dependency on EZH2 for survival. It appears that EZH2 dependency is observed with a higher frequency in tissues of lymphoid origin. 
 
-![Percentages of tissue types in the overall DepMap Crispr dataset and among the cell lines with a dpendency on EZH2](../../../../input_figures/dependency.percentages.png){ width=70% }
+![Percentages of tissue types in the overall DepMap crispr dataset and among the cell lines showing a dpendency on EZH2](../../../../input_figures/dependency.percentages.png){ width=70% }
 
 
 ### Gene-level Correlation Analysis
-Correlation analyses can never establish causality, however, as biology operates in gene modules at various scales, they are often useful to narrow down the search space in a mechanism of action investigation. This works particularly well in datasets that are suitable for multi-omics investigation, as the DepMap dataset is. In follow-up work, we may conduct a multi-omics factor analysis (MOFA) in order to extract pointers regarding the MOA of EZH2.
+Correlation analyses can almost never establish causality; however, as biology operates in gene modules at various scales, they are often useful to narrow down the search space in a mechanism of action investigation. In addition, these analyses often help to form hypotheses that can be tested in more time-consuming functional genetic follow-up studies. This works particularly well in datasets suitable for a multiomics investigation with various data modalities available for the same biological samples. This is the case for the DepMap dataset. In follow-up work, we could conduct a [multiomics factor analysis (MOFA)](https://www.embopress.org/doi/full/10.15252/msb.20178124), or it's updated [semi-supervised factor analysis (SOFA)](https://www.biorxiv.org/content/10.1101/2024.10.10.617527v4) variant in order to extract pointers regarding the mechanism of action for EZH2.
 
-We start by calculating the Pearson-correlation coefficient for all DepMap Crispr-samples (after removing essential genes) at the gene-level. The table below shows the ten most highly EZH2 correlated genes. Among them are the EZH2 core-complex members EED and SUZ12.
+We start by calculating the Pearson correlation coefficient for all DepMap CRISPR samples (after removing essential genes) in the gene dimension. The table below shows the ten most highly EZH2 correlated genes in the DepMap crispr screen. Among these are the EZH2 core-complex members EED and SUZ12. This indicates that all components of the high-confidence EZH2 protein complex come up with similar functional characteristics, solidifying EZH2 as a drug target candidate. 
 
 ```{r, echo=show_code}
 library(knitr)
@@ -87,45 +87,44 @@ df[,2] <- round(as.numeric(df[,2]),2)
 kable(df, caption = "Highly Pearson-correlated genes in the DepMap Crispr dataset.  Enzymatic activities are indicated as EC codes in the EC Enzymatic Activity Column. In the N EZH2 dep. colums the number of cell models is given that feature a dependency for EZH2 and the gene listed in the Gene column. The N total dep column lists the number of cell line model systems that have a dependency for the gene listed in the Gene column.")
 ```
 
-In a second step we cross-reference genes that have come up as high-confidence EZH2 interactors in proteomic screens against the DepMap dependency scores. The chart below allows to determine which of the EZH2 protein interactors are also featuring in the functional crispr Depmap screen. Of note, EZH1, a protein highly homologous to EZH2, exhibits a distinct, non-correlated functional profile. 
+In a second step, we cross-reference genes that have come up as high-confidence EZH2 interactors in proteomic screens against the DepMap dependency correlation coefficients. The chart below allows to determine which of the EZH2 protein-protein interactors are also correlated to EZH2 in the functional crispr Depmap screen. Of note, EZH1, a protein highly homologous to EZH2, exhibits a distinct, non-correlated functional profile, indicating that EZH1 and EZH2 have distinct, non-redundant functions. This correlation analysis helps to identify genes that could be considered for targeting simultaneously to exploit synthetic lethality. An approach challenging approach elegantly laid out by Brent Stockwell in his book [The Quest for Cure](https://cup.columbia.edu/book/the-quest-for-the-cure/9780231152129/). Genes that exhibit a similar profile in functional screens are acting either in parallel, potentially redundant pathways or in the same physiological pathway.  
 
-![EZH2 correlated genes in the crispr-dependency screen. Core EZH2 complex members EED and SUZ12 and the histone-methyltransferase DOT1L show a functional correlation](../../../../input_figures/complex.correlation.png){ width=50% }
+![EZH2 correlated genes in the crispr-dependency screen. Core EZH2 complex members EED and SUZ12, as well as the histone-methyltransferase DOT1L show a functional correlation](../../../../input_figures/complex.correlation.png){ width=50% }
 
 ### Model Cell System Correlation Analysis
-By calculating the Pearson correlation coefficient between the various model cell lines we can work out which systems are functionally related. This may come in handy, in case we can identify multiple cell-line systems with similar functional characteristics. This would allow more flexibility in the model selection and would allow to optimize for wetlab and screening lab technical requirements. This increases the chance that a cell line that's easy to work with can be picked for a range of validation applications.  
+By calculating the Pearson correlation coefficient between the various model cell lines, we can work out which systems have similar functional characteristics. This may come in handy, in case we can identify multiple cell-line systems with similar functional characteristics. This would allow more flexibility in the model selection and would allow us to optimize for wetlab and screening lab technical requirements. This increases the chance that a cell line that is easy to work with can be picked for a range of wetlab validation and characterization assays.  
 
-Next we will examine the correlation between EZH2-dependent cell lines with respect to Crispr scores. This may help to identify several model systems with similar functional characteristics so we have a choice and can optimise the model system selection with wetlab screening requirements in mind. 
+Next, we will examine the correlation between EZH2-dependent cell lines with respect to CRISPR dependency scores. This may help to identify several model systems with similar functional characteristics so we have a choice and can optimise the model system selection with wetlab screening requirements in mind. 
 
 ![Correlation between EZH2-dependent cell line model systems](../../../../input_figures/target.gene.model.correlation.png){ width=70% }
 
 ### Examination of Expression Patterns in EZH2-dependent Cell lines
-Robust expression levels for EZH2 in EZH2-dependent cell lines is an indication that the effect is specific indeed. Therefore we next cross-reference EZH2 expression (TPM values) and EZH2-dependency scores. Of note, EZH2-dependency is seen in cell lines with robust EZH2 expression.
+Robust expression levels for EZH2 in EZH2-dependent cell lines is an indication that the observed functional effect is EZH2-specific indeed. Therefore, we next cross-reference EZH2 expression (log10 TPM values) and EZH2 crispr dependency scores. Of note, EZH2-dependency is seen in cell lines with robust EZH2 expression particularly for the cell lines with a lymphoid tissue of origin.
 
-![EZH2 expression (TPM) vs. EZH2-dependency scores. Tissues of origin are indicated for EZH2-dependent cell lines](../../../../input_figures/target.crispr.vs.tpm.scores.png){ width=70% }
+![EZH2 expression (log10 TPM) vs. EZH2-dependency scores. Tissues of origin are indicated for EZH2-dependent cell lines](../../../../input_figures/target.crispr.vs.tpm.scores.png){ width=70% }
 
 
 
 ## Summary and Selection Recommendation
 
-In summary, I would recommend to pick a cell line model system with the lymphoid lineage as this tissue type appears to be enriched with respect to dependency in crispr screens. Several model systems are available in this area so that a choice can be optimized for wetlab needs, e.g. optimal performance in robotic screening and imaging equipment. Expression of `r target_gene` is not as narrow as we'd like it to be for minimizing toxic and off-target effects in other tissues, however, it also is not ubiquitiously expressed either. If this proves to be an important target, it might be worth to examine expression patterns of the complex it is part of in order to target this. `r target_gene` has an enzymatic activity, which may make it a more tractable target for a small molecule inhibitor. Core `r target_gene` complex members EED and SUZ12 are positively correlated with respect to their overall crispr dependency scores across multiple cell lines, indicating that their deletion has similar functional consequences. Importantly, the homologous histone-mythyltransferase EZH1 does not correlate with EZH2 in terms of crispr dependency scores, indicating that certain tumors might be dependent on EZH2 function. 
+In summary, I would recommend to pick a cell line model system with a lymphoid tissue type of origin. This tissue of origin appears to be enriched with respect to dependency in crispr screens. Several model systems are available in this area so that a choice can be optimized for wetlab needs, e.g., optimal performance in robotic screening and imaging equipment. Practically, I would closely examine the wetlab properties of lymphoid origin cell lines that are highly correlated in the cell-level Pearson correlation analysis (see heatmap plot, top left corner). Based on the GTEx results, expression of `r target_gene` is not as narrow as we'd like it to be for minimizing toxic and off-target effects in other tissues; however, it also is not ubiquitiously expressed either. If this proves to be an important target, it might be worth to examining expression patterns of the complex it is part of in order to target this. `r target_gene` has an enzymatic activity, which may make it a more tractable target for a small molecule inhibitor. Core `r target_gene` complex members EED and SUZ12 are positively correlated with respect to their overall CRISPR dependency scores across multiple cell lines, indicating that their deletion has similar functional consequences. Importantly, the homologous histone-mythyltransferase EZH1 does not correlate with EZH2 in terms of crispr dependency scores, indicating that certain tumors might be dependent on EZH2 function. 
 
-EZH2 is a histone-methyltransferase which may give a direction for assays regarding target mechanism validation. EZH2 has been reported in the Uniprot database to be post-translationally modified. Therefore proteins harboring catalytic activities and showing a correlation in the crispr dependency assay should be a focus. 
-
-Compound functinoal activity assays ideally are carried out in a cell line model system that works well with automated assay platforms. In this case we could identify multiple EZH2-dependent model cell lines in the lymphoid tissue which should make it possible to optimise for ease of wetlab work. 
+EZH2 is a histone-methyltransferase that may give a direction for assays regarding target mechanism validation. EZH2 has been reported in the Uniprot database to be post-translationally modified itself. Therefore, proteins harboring catalytic activities and showing a correlation in the crispr dependency assay could be a focus. 
 
 The choosen target, EZH2, has a catalytic activity and shows a specific profile with respect to dependency scores. It could be a tractable drug target, even though it is expressed by various tissues. 
 
-## Checklist for the Cell Line Model Selection
+## User Checklist for the Cell Line Model Selection
 - [ ] Are you satisfied with the tissue expression pattern seen for EZH2?
+- [ ] Have you considered potential off-target issues around the histone methyltransferases EZH1 and DOT1L?
 - [ ] What tissue model system or therapeutic area would you like to focus on?
-- [ ] Are you considering designing a competetive inhibitor? In this case we should take a closer look at the functional profiles of other genes with the same catalytic activity. 
-- [ ] What is the ideal model cell line profile for you to work with in follow up screens (adherent, suspension, ability to image, etc.)?
-- [ ] Will it be necessary to move to the single-cell or spatial analysis level to determine which celltype in a given tissue expresses high levels EZH2?
-- [ ] Is it possible that your target requires a more complex assay system (3D, lymphocyte co-cultures, etc.)
+- [ ] Are you considering designing a competitive inhibitor? In this case, we should take a closer look at the functional profiles of other genes with the same catalytic activity. 
+- [ ] What is the ideal model cell line profile for you to work with in follow-up screens (adherent, suspension, ability to image, etc.)?
+- [ ] Will it be necessary to move to the single-cell or spatial analysis level to determine which cell type in a given tissue expresses high levels of EZH2?
+- [ ] Is it possible that your target requires a more complex assay system to account for a non-cell intrinsic mechanism of action (3D, lymphocyte co-cultures, etc.)?
 - [ ] Do you have reason to believe that your drug candidate acts in a gender-specific fashion?
 
 ## Additional Options for Consideration
-- Examination of genome wide association (GWAS) and mendelian randomization (MR) studies
-- Examination of compounds that are know to bind `r target_gene`
-- Drug repurposing search to find approved drugs that may act as EZH2 inhibitors
-- In silico screening for EZH2 binding compound classes
+- Examination of genome-wide association (GWAS) and mendelian randomization (MR) studies, for example, [with this EBI resource](https://www.ebi.ac.uk/gwas/)
+- Examination of compounds that are known to bind or inhibit `r target_gene`
+- Drug repurposing searches: Are there any existing EZH2 inhibitors, either FDA and EMA approved or at least gone successfully through phase 1 clinical trials to establish non-toxicity?
+- In silico screening for EZH2-complex small molecule interactors or inhibitors

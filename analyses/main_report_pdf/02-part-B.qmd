@@ -4,35 +4,35 @@ format: pdf
 
 # Part B: Drug Target Search in the Liver Cancer Therapeutic Area
 
-In this part I will sketch a strategy to identify suitable drug targets in the liver cancer space. A drug target with a narrow expression profile is ideal, as it minimizes the likelihood of undesirable side effects. The perfect drug-target would be selectively expressed in disease tissue. Ideally it would also feature a catalytic activity that disease tissue is dependent on so if that is inhbited, the disease cells die. 
+In this part, I will sketch a strategy to identify suitable drug targets in the liver cancer space. A drug target with a narrow expression profile is ideal, as it minimizes the likelihood of undesirable side effects. The perfect drug target would be selectively expressed in disease tissue. Ideally, it would also feature a catalytic activity that disease tissue is dependent on, so if that is inhbited, the disease cells die. A jupyter notebook with the code underpinning this analysis can be accessed [here](https://github.com/decusInLabore/targetreport/blob/main/analyses/main_report_ipynb/part.B.target.identification.ipynb)
 
-With that in mind I will 
+With that in mind, I will:
 
 - Look for genes that are expressed in a liver-specific fashion using the GTEx dataset of healthy primary human organs
-- Determine liver cancer specific gene expression across multiple patiennts using [this resource](https://www.nature.com/articles/s41467-024-48310-4) featuring dozens of paired tumor-normal samples
+- Determine liver tumor-specific gene expression across multiple patients using [this resource](https://www.nature.com/articles/s41467-024-48310-4) featuring dozens of paired tumor-normal samples
 - Reference candidate genes against DepMap functional data
 
-## Identification of Liver-specific Enzymatic activities
+## Identification of Liver-specific Enzymatic Activities
 
 ### Identifying Highly Liver-specific Genes Featuring Enzymatic Activities
-In a first step, using the [GTEx bulkRNAseq datasource](https://gtexportal.org/home/) of healty donors as basis, we will identify genes that are expressed in a liver-specific fashion. To do so, we are using the Kendall tau score to infer a narrow overall expression profile and filter that against genes with high average expression in liver tissue. We are cross-referencing these results against the [Uniprot](https://www.uniprot.org/) derrived list of genes with catalytic activity. The rational for that is that small-molecule inhibitors are easier to design against targets with a mesurable catalytic activity. 
+In a first step, using the [GTEx bulkRNAseq datasource](https://gtexportal.org/home/) of healty donors as a basis, we will identify genes that are expressed in a liver-specific fashion. To do so, we are using the Kendall tau score to infer a narrow overall expression profile and filter that against genes with high average expression in liver tissue. We are cross-referencing these results against the [Uniprot](https://www.uniprot.org/) derived list of genes with catalytic activity. The  rationale for that is that small-molecule inhibitors are easier to design against targets with a measurable catalytic activity. 
 
 ![Kendall tau score vs. average liver log10 TPM expression values. Highlighted in red: genes featuring at least one enzymatic activity](../../../../input_figures/tau.score.vs.liver.lg10.tpm.png){ width=80% }
 
 
 ## Identification of Genes with Elevated Expression in Primary Human Liver Tumors
-In order to identify genes that are expressed in a liver cancer specific fashion I will use this recently published summary dataset ([Kang et al.](https://www.nature.com/articles/s41467-024-48310-4)) of paired primary human tumor-normal samples. I am selecting a single-cell dataset, so it is possible to investigate celltype specific tumor-normal expression dynamics in those samples. To get started, I have downloaded the single-cell dataset, and transformed each single-cell sample into a pseudobulk sample. Differential gene expression analysis and subsequent GSEA pathay analysis were performed using the R-package DESeq2. A python implementation of DESeq2 exists, but it is not implemented to the same standard yet as R-DESeq2. The full pseudobulk differential gene expression analysis can be reviewed in an interactive viewer on a publically acessible website [here](https://biologic.crick.ac.uk/bulkliverdemo/report). The Kang et al. dataset also contains cancer tumor-normal pairs from other tissues so that tissue specificity of liver tumor specific gene expression can be examined further in the future. 
+In order to identify genes that are expressed in a liver tumor-specific fashion, I will use this recently published summary dataset ([Kang et al.](https://www.nature.com/articles/s41467-024-48310-4)) of paired primary human tumor-normal samples. I am selecting a single-cell dataset, so it is possible to investigate cell-type-specific tumor-normal expression dynamics in those samples. To get started, I have downloaded the single-cell dataset and transformed each single-cell sample into a pseudobulk sample. Differential gene expression analysis and subsequent GSEA pathay analysis were performed using the R-package DESeq2. A python implementation of DESeq2 exists, but it is not implemented to the same standard yet as R-DESeq2. The full pseudobulk differential gene expression analysis can be reviewed in an interactive viewer on a publicly accessible website [here](https://biologic.crick.ac.uk/bulkliverdemo/report). The Kang et al. dataset also contains cancer tumor-normal pairs from other tissues so that tissue specificity of liver tumor specific gene expression can be examined further in the future. 
 
-### Pseudobulk Differential Gene Expression Analysis on Paired Tumor-Normal Livercancer Samples
-We start by examening the pseudobulk PCA analysis. We see a nice separation by tissue of orign and by tumor-normal status already in the first and second PCA dimension. Additional PCA dimensions can be reviewed in the interactive pseudobulk RNAseq main analysis report [here](https://biologic.crick.ac.uk/bulkliverdemo). 
+### Pseudobulk Differential Gene Expression Analysis on Paired Tumor-Normal Liver Cancer Samples
+We start by examining the pseudobulk PCA analysis. We see a nice separation by tissue of orign and by tumor-normal status already in the first and second PCA dimension. Additional PCA dimensions can be reviewed in the interactive pseudobulk RNAseq main analysis report [here](https://biologic.crick.ac.uk/bulkliverdemo). 
 
 ![Distribution of pseudobulk tumor and normal samples in the Kang et al. dataset. An interactive version of this figure can be found [here](https://biologic.crick.ac.uk/bulkliverdemo/pca)](../../../../input_figures/PCA12.B.9.pca.V20251117.png){ width=60% }
 
-Next we are looking at an MA-plot depicting liver tumor vs. liver normal gene expression. 
+Next, we are looking at an MA-plot depicting liver tumor vs. liver normal gene expression. 
 
 ![MA-plot detailing tumor-perturbed gene expression in liver cancer. An interactive version of this figure can be accessed [here](https://biologic.crick.ac.uk/bulkliverdemo/scatterplot?x_axis=contrast_3_lg2BaseMean_Liver_T_vs_Liver_N&y_axis=contrast_3_logFC_Liver_T_vs_Liver_N&cat_id=ag_lab_categories__10)](../../../../input_figures/Liver_T_vs_Liver_N.MA.plot.B11.DGE.V20251117.png){ width=70% }
 
-As a final example we are examening the relative expression of ligands in tumor-normal samples in various tissues.
+As a final example, we are examining the relative expression of ligands in tumor-normal samples in various tissues.
 
 ![MA-plot detailing tumor-perturbed gene expression in liver cancer](../../../../input_figures/Heatmap.Ligands_in_most_variable_genes.B10.Heatmap.V20251117.png){ width=95% }
 
@@ -42,8 +42,9 @@ As a final example we are examening the relative expression of ligands in tumor-
 
 ### Data Filtering to Establish Drug-target Leads
 
-Finally, we are using the DepMap Crispr dataset for a functional validation. We apply the following filters to find liver cancer drug target candidates for consideration:
+Finally, we are using the DepMap CRISPR dataset for a functional validation. We apply the following filters to find liver cancer drug target candidates for consideration:
 
+- We rank liver-specific gene expression using the Kendall tau score in conjunction with high gene expression in liver samples
 - We filter for genes with enzymatic activity 
 - We filter for genes that are statistically-significant up-regulated in the liver tumor setting
 
@@ -65,27 +66,29 @@ kable(df.res, caption = "Liver-cancer cancer drug-target candidates based on the
 ```
 
 ### Dependency Scores for Top Hit
-Now we check on the top-scoring gene, AMBP. AMBP features a highly liver-specific gene expression pattern [GTEx link](https://gtexportal.org/home/gene/AMBP). Next we examine if Crispr-dependency scores also exhibit a liver-specific pattern. 
+Now we check on the top-scoring gene, AMBP. AMBP features a highly liver-specific gene expression pattern [GTEx link](https://gtexportal.org/home/gene/AMBP). Next, we examine if CRISPR-dependency scores also exhibit a liver-specific pattern. 
 
 ![Crispr-dependency scores for AMBP](../../../../input_figures/scores.per.celltype.partB.AMBP.png){ width=80% }
 
-Unfortunately AMBP can not be established here as a sensible drug-target candidate for in the liver cancer therapeutic area, but hopefully the above will illustrate how knowledge-driven dataset selection and targeted filtering can lead to reasonable drug-target candidates that then can be subjected to extensive functional validation. 
+Checking the [EBI GWAS database entry for AMBP](https://www.ebi.ac.uk/gwas/genes/AMBP) does not establish a link between AMPB and liver cancer either. Unfortunately, AMBP can not be established as a sensible drug-target candidate for the liver cancer therapeutic area, but hopefully the above will illustrate how knowledge-driven dataset selection and targeted filtering can lead to reasonable drug-target candidates that then can be subjected to extensive functional validation. 
 
 
 
 ## Summary
 Due to the limited amount of time, the above study can be no more than a sketch. 
 
-In principal, the following insights are possible:
+In principle, the following insights are possible:
 
-- Identification of genes, proteins, post-translational modifications and metabolites those concentrations and abundances correlate with the apperance of a disease state
-- Identification of gene modules, that change in a coordinated fashion when transitioning from a healthy to a disease state
+- Identification of genes, proteins, post-translational modifications, and metabolites whose concentrations and abundances correlate with the appearance of a disease state
+- Identification of gene modules that change in a coordinated fashion when transitioning from a healthy to a disease state
+- Using existing physiological knowledge we might be able to infer gene-regulatory networks (GRN)
 - Identification of drug-perturbed profiles that are inverse to a disease profile
-- Particularly with a multi-omics approach more solid results and a fuller picture regarding mechanisms of action can be obtained
+- Particularly with a multi-omics approach, more solid results and a fuller picture regarding mechanisms of action can be obtained
+- Testable hypotheses regarding possible molecular mechanisms of action can be formed to inform additional labwork in the wetlab
 
 Limitations:
 
-- Correlation is helpful to limit the search space and focus investigations, but it can only in very rare circumstances establish causation
-- Often omics experiments examine samples that contain a mixture of cells, particularly in bulk-RNAseq and proteomics approaches. When interpreting results, this needs to be kept in mind
-- Location matters. Even in single-cell omics techniques spatial information might be lost and small sub-population with high physiological significance might go unnoticed
+- Correlation is helpful to limit the search space and focus investigations, but it can only, in very rare circumstances, establish causation
+- Often, OMICS experiments examine samples that contain a mixture of cells, particularly in bulk RNAseq and proteomics approaches. When interpreting results, this needs to be kept in mind
+- Location matters. Even in single-cell omics techniques, spatial information might be lost and, a small sub-population with high physiological significance might go unnoticed
 

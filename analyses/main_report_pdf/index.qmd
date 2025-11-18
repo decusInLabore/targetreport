@@ -6,11 +6,13 @@ format: pdf
 
 The objectives for this report were the following:
 
-- Data-driven model system selection for target characterization and validation
-- Sketching rational strategy to find a liver drug target for further exploration
+- Data-driven cell model system selection for wetlab target characterization and validation
+- Sketching a data selection, analysis, and filtering strategy to establish a lead on a drug target in the liver cancer space for further exploration
 
 Guiding Principles:
 
-- Whenever possible, scorable metrics are to be used to enable future automation
-- Reports should be actionable for everyone from domain experts to software engineers
-- Bioinformatics ideally is designed with collaboration in mind from the bottom up 
+- Bioinformatics ideally is designed with collaboration in mind from the bottom up
+- Whenever possible, scorable metrics are to be created to enable future automation using recent ideas by [Aygun et al](https://arxiv.org/abs/2509.06503)
+- Data, raw and analysed, should be shareable and easily available for co-workers within the organization. Ideally, through APIs with appropriate access control, as [spearheaded by Jeff Bezos in 2002](https://nordicapis.com/the-bezos-api-mandate-amazons-manifesto-for-externalization/)
+- Reports should be actionable for everyone, from domain experts to software engineers
+ 
